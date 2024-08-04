@@ -5,7 +5,7 @@ import pytest
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-BACKEND_DIR_NAME = 'kittygram_backend'
+BACKEND_DIR_NAME = 'backend'
 FRONTEND_DIR_NAME = 'frontend'
 NGINX_DIR_NAME = 'nginx'
 DEPLOY_INFO_FILE_NAME = 'tests.yml'
