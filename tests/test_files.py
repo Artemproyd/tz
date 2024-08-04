@@ -57,7 +57,7 @@ def test_backend_dokerfile_content(backend_dir_info: tuple[Path, str],
     for keyword in expected_keywords:
         assert keyword in dockerfile_content.lower(), (
             f'Убедитесь, что настроили {dockerfile_name} для образа '
-            '`backend`.'
+            '`kittygram_backend`.'
         )
 
 

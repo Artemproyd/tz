@@ -46,7 +46,7 @@ jobs:
     # Запускаем flake8
     - name: Test with flake8 and django tests
       # Вызываем flake8 и указываем ему,
-      # что нужно проверить файлы только в папке backend/
+      # что нужно проверить файлы только в папке kittygram_backend/
       env:
         POSTGRES_USER: django_user
         POSTGRES_PASSWORD: django_password
@@ -83,9 +83,9 @@ jobs:
         # Одновременный билд и пуш образа в Docker Hub
         uses: docker/build-push-action@v4
         with:
-          # Параметр context: ./backend/ указывает, что нужный Dockerfile
-          # находится в ./backend/
-          context: ./backend/
+          # Параметр context: ./kittygram_backend/ указывает, что нужный Dockerfile
+          # находится в ./kittygram_backend/
+          context: ./kittygram_backend/
           # Параметр push: true указывает, что образ нужно не только собрать,
           # но и отправить на Docker Hub
           push: true
@@ -93,7 +93,7 @@ jobs:
           # Для каждого пересобранного образа
           # устанавливаем тег latest, чтобы потом
           # на сервере и в docker-compose.yml не указывать версию
-          tags: ${{ secrets.DOCKER_USERNAME }}/backend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/kittygram_backend:latest
 
   frontend_tests:
     runs-on: ubuntu-latest
