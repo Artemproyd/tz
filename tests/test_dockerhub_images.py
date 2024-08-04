@@ -25,7 +25,7 @@ def test_dockerhub_images_exist(
         'https://hub.docker.com/v2/namespaces/{username}/repositories/{image}/'
     )
     expected_docker_images = (
-        'kittygram_backend', 'kittygram_frontend', 'kittygram_gateway'
+        'backend', 'kittygram_frontend', 'kittygram_gateway'
     )
     docker_hub_username = _get_dockerhub_username(
         deploy_file_info, deploy_info_file_content, dockerhub_username_key
