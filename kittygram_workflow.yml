@@ -1,4 +1,4 @@
-name: Main Taski workflow
+name: Main Taski workflows
 
 on:
   push:
@@ -77,7 +77,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          # Хорошо ли держать логин и пароль прямо в коде workflow?
+          # Хорошо ли держать логин и пароль прямо в коде workflows?
           # Нет, это нехорошо
       - name: Push to DockerHub
         # Одновременный билд и пуш образа в Docker Hub
