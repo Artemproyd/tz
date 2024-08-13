@@ -22,7 +22,7 @@ services:
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
-      - static_volume:/static_fontend
+      - static_volume:/frontend_static
   gateway:
     image: artemproyd/kittygram_gateway
     env_file: .env
@@ -31,3 +31,4 @@ services:
       - media:/media/
     ports:
       - 9000:80
+

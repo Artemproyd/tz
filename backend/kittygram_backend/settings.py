@@ -8,7 +8,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', '111')
 
 DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+#ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = '*'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -52,7 +53,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'kittygram_backend.wsgi.application'
-
+#'HOST': os.getenv('DB_HOST', ''),
 
 DATABASES = {
     'default': {
@@ -60,7 +61,7 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB', 'django'),
         'USER': os.getenv('POSTGRES_USER', 'django'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', ''),
+        'HOST': 'db',
         'PORT': os.getenv('DB_PORT', 5432)
     }
 }
