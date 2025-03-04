@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'rest_framework.authtoken',
     'rest_framework',
     'djoser',
@@ -58,11 +59,14 @@ WSGI_APPLICATION = 'kittygram_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'django'),
-        'USER': os.getenv('POSTGRES_USER', 'django'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+        'NAME': 'kittygram',
+        'USER': 'kittygram_user',
+        'PASSWORD': 'kittygram_password',
         'HOST': 'db',
-        'PORT': os.getenv('DB_PORT', 5432)
+        'PORT': '5432',
+        'OPTIONS': {
+            'client_encoding': 'UTF8',  # Указание кодировки
+        },
     }
 }
 
@@ -96,11 +100,12 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'collected_static'
-
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -116,4 +121,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 
+
 }
+
+SITE_URL = os.getenv("SITE_URL", "http://localhost:9000")
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "sk_test_51QychpLtvL6tEL8FaOscIN7hI3tfg2ky6vvUIhLSnGCAZSmjvyClEjtbNbNNImOtxDX8ixhwjGA42V8mRIv2PBEo00tg3mbefb")  # Замени на свой ключ
+STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY", "pk_test_51QychpLtvL6tEL8FbDzGA2cjiyOzwUCnDvh7B8BC6QrsaAoUlyJL9eB4iYvmLACP2S6km5rFLd7pRagOczc2AmXN009andLMXZ")

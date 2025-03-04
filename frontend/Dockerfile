@@ -5,6 +5,8 @@ COPY package.json package.json
 COPY package-lock.json package-lock.json
 
 RUN npm ci
+RUN npm install @stripe/stripe-js 
+RUN npm install @stripe/react-stripe-js
 
 COPY . .
 RUN npm run build

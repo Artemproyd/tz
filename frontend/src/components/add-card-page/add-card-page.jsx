@@ -1,81 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-
-import { sendCard } from "../../utils/api";
-import { colorsList, getBase64 } from "../../utils/constants";
 
 import returnIcon from "../../images/left.svg";
 import addImgIcon from "../../images/image.svg";
 
 import { ButtonForm } from "../ui/button-form/button-form";
-import { Select } from "../ui/select/select";
 import { ButtonSecondary } from "../ui/button-secondary/button-secondary";
 import { Input } from "../ui/input/input";
-import { ColorsBox } from "../ui/colors-box/colors-box";
 
 import styles from "./add-card-page.module.css";
 
-export const AddCardPage = ({ extraClass = "" }) => {
-  const [currentColor, setCurrentColor] = React.useState("#FFFFFF");
-  const [currentFileName, setCurrentFileName] = React.useState("");
-  const [card, setCard] = React.useState({
-    color: currentColor,
-    achievements: [],
-  });
-  const [errorName, setErrorName] = React.useState("");
-  const [errorAge, setErrorAge] = React.useState("");
-
+export const AddItemPage = ({ extraClass = "" }) => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [errorName, setErrorName] = useState("");
+  const [errorDescription, setErrorDescription] = useState("");
+  const [errorPrice, setErrorPrice] = useState("");
   const history = useHistory();
 
   const handleReturn = () => {
     history.goBack();
   };
 
-  const onChangeInput = (e) => {
-    setCard({
-      ...card,
-      [e.target.name]: e.target.value,
-    });
-    e.target.name === "image" && setCurrentFileName(e.target.value);
-  };
-
-  const handleResponse = (res) => {
-    if (typeof res.name === "object") {
-      setErrorName("Поле с именем является обязательным");
-    } else if (typeof res.birth_year === "object") {
-      setErrorAge("Поле с годом рождения является обязательным");
-    }
-  };
-
   const handleSubmit = () => {
-    errorAge && setErrorAge("");
-    errorName && setErrorName("");
+    // Валидация полей
+    let isValid = true;
 
-    const photo = document.querySelector('input[type="file"]').files[0];
-    photo
-      ? getBase64(photo).then((data) => {
-          card["image"] = data;
-          sendCard(card)
-            .then((res) => {
-              if (res && res.id) {
-                history.push(`/cats/${res.id}`);
-              }
-            })
-            .catch(handleResponse);
-        })
-      : sendCard(card)
-          .then((res) => {
-            if (res && res.id) {
-              history.push(`/cats/${res.id}`);
-            }
-          })
-          .catch(handleResponse);
+    if (!name.trim()) {
+      setErrorName("Название не может быть пустым");
+      isValid = false;
+    } else {
+      setErrorName("");
+    }
+
+    if (!description.trim()) {
+      setErrorDescription("Описание не может быть пустым");
+      isValid = false;
+    } else {
+      setErrorDescription("");
+    }
+
+    if (!price.trim() || isNaN(price) || Number(price) <= 0) {
+      setErrorPrice("Цена должна быть числом больше 0");
+      isValid = false;
+    } else {
+      setErrorPrice("");
+    }
+
+    if (!isValid) return;
+
+    // Создание товара
+    createItem({ name, description, price: Number(price) })
+      .then((res) => {
+        if (res) {
+          history.push(`/items/${res.id}`); // Перенаправляем на страницу товара
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setErrorName("Ошибка при создании товара");
+      });
   };
 
   return (
     <div className={`${styles.content} ${extraClass}`}>
       <h2 className="text text_type_h2 text_color_primary mt-25 mb-9">
-        Новый кот
+        Новый товар
       </h2>
       <ButtonSecondary
         extraClass={styles.return_btn_mobile}
@@ -83,47 +74,27 @@ export const AddCardPage = ({ extraClass = "" }) => {
         onClick={handleReturn}
       />
       <div className={styles.container}>
-        <label htmlFor="image" className={styles.img_box}>
-          <img
-            className={styles.img}
-            src={addImgIcon}
-            alt="Добавить фото котика."
-          />
-          <p className="text text_type_medium-16 text_color_primary">
-            {currentFileName
-              ? currentFileName
-              : "Загрузите фото в фотрмате JPG"}
-          </p>
-        </label>
-        <input
-          type="file"
-          className={styles.file_input}
-          name="image"
-          id="image"
-          onChange={onChangeInput}
-        />
         <Input
-          onChange={onChangeInput}
-          name="name"
           type="text"
-          placeholder="Имя кота"
+          placeholder="Название товара"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           error={errorName}
         />
         <Input
-          onChange={onChangeInput}
-          name="birth_year"
           type="text"
-          placeholder="Год рождения"
-          error={errorAge}
+          placeholder="Описание товара"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          error={errorDescription}
         />
-        <ColorsBox
-          colorsList={colorsList}
-          currentColor={currentColor}
-          setCurrentColor={setCurrentColor}
-          card={card}
-          setCard={setCard}
+        <Input
+          type="number"
+          placeholder="Цена товара"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          error={errorPrice}
         />
-        <Select card={card} setCard={setCard} />
         <ButtonForm
           extraClass={styles.submit_btn}
           text="Сохранить"
@@ -138,3 +109,4 @@ export const AddCardPage = ({ extraClass = "" }) => {
     </div>
   );
 };
+

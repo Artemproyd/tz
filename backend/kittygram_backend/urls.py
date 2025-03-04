@@ -1,13 +1,15 @@
-from cats.views import AchievementViewSet, CatViewSet
+from cats.views import ItemViewSet, OrderViewSet
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
+from cats.views import stripe_webhook
 
 router = routers.DefaultRouter()
-router.register(r'cats', CatViewSet)
-router.register(r'achievements', AchievementViewSet)
+router.register(r'items', ItemViewSet, basename='item')
+router.register(r'order', OrderViewSet, basename='order')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 
 import { UserContext } from "../../utils/context";
@@ -13,9 +14,11 @@ import { ButtonHeader } from "../ui/button-header/button-header";
 import { ButtonSecondary } from "../ui/button-secondary/button-secondary";
 
 import styles from "./header.module.css";
+import { createItems } from "../../utils/api"; // импортируем функции
 
 export const Header = ({ setQueryPage, extraClass = "" }) => {
   const [user, setUser] = React.useContext(UserContext);
+  const [orderId, setOrderId] = useState(null);
 
   const location = useLocation();
 
@@ -31,9 +34,21 @@ export const Header = ({ setQueryPage, extraClass = "" }) => {
   };
 
   const headerClassList = `${styles.header} ${
-    (location.pathname === "/signin" || location.pathname === "/signup") &&
-    styles.hidden
+    (location.pathname === "/signin" || location.pathname === "/signup") && styles.hidden
   } ${extraClass}`;
+
+  useEffect(() => {
+    if (user.id) {
+      fetch("/api/order/current/", {
+        headers: {
+          Authorization: `Token ${localStorage.getItem("auth_token")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => setOrderId(data.id))
+        .catch((error) => console.error("Ошибка загрузки корзины:", error));
+    }
+  }, [user]);
 
   return (
     <header className={headerClassList}>
@@ -45,8 +60,14 @@ export const Header = ({ setQueryPage, extraClass = "" }) => {
       ) : (
         <div className={styles.btns_box}>
           <ButtonHeader
-            to="/cats/add"
-            text="Добавить кота"
+            to="/items/add"
+            text="Создать товар"
+            icon={plusIcon}
+            isLogin={true}
+          />
+          <ButtonHeader
+            to={orderId ? `/order/${orderId}` : "#"}
+            text="Заказ"
             icon={plusIcon}
             isLogin={true}
           />

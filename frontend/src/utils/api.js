@@ -58,8 +58,8 @@ export const getUser = () => {
   }).then(checkResponse);
 };
 
-export const getCards = (page = 1) => {
-  return fetch(`${URL}/api/cats/?page=${page}`, {
+export const getItems = (page = 1) => {
+  return fetch(`${URL}/api/items/?page=${page}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -68,8 +68,8 @@ export const getCards = (page = 1) => {
   }).then(checkResponse);
 };
 
-export const getCard = (id) => {
-  return fetch(`${URL}/api/cats/${id}/`, {
+export const getItem = (id) => {
+  return fetch(`${URL}/api/items/${id}/`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -78,18 +78,8 @@ export const getCard = (id) => {
   }).then(checkResponse);
 };
 
-export const getAchievements = () => {
-  return fetch(`${URL}/api/achievements/`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Token ${localStorage.getItem("auth_token")}`,
-    },
-  }).then(checkResponse);
-};
-
-export const sendCard = (card) => {
-  return fetch(`${URL}/api/cats/`, {
+export const sendItem = (card) => {
+  return fetch(`${URL}/api/items/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -99,8 +89,8 @@ export const sendCard = (card) => {
   }).then(checkResponse);
 };
 
-export const updateCard = (card, id) => {
-  return fetch(`${URL}/api/cats/${id}/`, {
+export const updateItem = (card, id) => {
+  return fetch(`${URL}/api/items/${id}/`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -111,7 +101,7 @@ export const updateCard = (card, id) => {
 };
 
 export const deleteCard = (id) => {
-  return fetch(`${URL}/api/cats/${id}/`, {
+  return fetch(`${URL}/api/items/${id}/`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -124,3 +114,108 @@ export const deleteCard = (id) => {
     return { status: false };
   });
 };
+
+export const createItem = async (itemData) => {
+  try {
+    const response = await fetch("/api/items/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Token ${localStorage.getItem("auth_token")}`,
+      },
+      body: JSON.stringify(itemData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Ошибка при создании товара");
+    }
+
+    return response.json(); // Возвращаем данные созданного товара
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addToCart = async (itemId, quantity) => {
+  try {
+    const response = await fetch("/api/order/add_item_to_order/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Token ${localStorage.getItem("auth_token")}`,
+      },
+      body: JSON.stringify({ item_id: itemId, quantity }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Ошибка при добавлении товара в заказ");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getCurrentOrder = async () => {
+  try {
+    const response = await fetch("/api/order/current/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Token ${localStorage.getItem("auth_token")}`, // Если используется токен аутентификации
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Ошибка при получении заказа");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Ошибка API:", error);
+    return null;
+  }
+};
+
+export const updateItemQuantity = async (itemId, quantity) => {
+  try {
+    const response = await fetch(`/api/order/add_item_to_order/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Token ${localStorage.getItem("auth_token")}`,
+      },
+      body: JSON.stringify({ item_id: itemId, quantity: quantity }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Ошибка при обновлении количества товара");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const removeItemFromOrder = async (orderId, itemId) => {
+  const response = await fetch(`/api/order/${orderId}/remove_item/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Token ${localStorage.getItem("auth_token")}`,
+    },
+    body: JSON.stringify({ item_id: itemId }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Ошибка при удалении товара");
+  }
+  return response.json();
+};
+
+
+

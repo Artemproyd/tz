@@ -1,0 +1,50 @@
+.cancelPage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f8d7da; /* Красный фон для отмены */
+}
+
+.card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 300px;
+}
+
+.cancelIcon {
+  width: 50px;
+  height: 50px;
+  color: #f44336; /* Красный цвет для крестика */
+  margin-bottom: 20px;
+}
+
+.cancelTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #d32f2f; /* Красный текст */
+  margin-bottom: 10px;
+}
+
+.cancelDescription {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.backButton {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #d32f2f;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.backButton:hover {
+  background-color: #b71c1c;
+}
