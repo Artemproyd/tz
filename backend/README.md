@@ -32,20 +32,29 @@ python3 -m venv env
 python3 -m pip install --upgrade pip
 ```
 
-Установить зависимости из файла requirements.txt:
+Создайте в корневой папке файл .env и вставьте туда:
 
-```
-pip install -r requirements.txt
-```
+ini
+POSTGRES_DB=kittygram
+POSTGRES_USER=kittygram_user
+POSTGRES_PASSWORD=kittygram_password
+DB_PORT=5432
+DB_HOST=db
 
-Выполнить миграции:
+STRIPE_SECRET_KEY=секретный_ключ
+STRIPE_PUBLIC_KEY=публичный_ключ
+REACT_APP_STRIPE_PUBLIC_KEY=публичный_ключ
 
-```
-python3 manage.py migrate
-```
-
-Запустить проект:
-
-```
-python3 manage.py runserver
-```
+DJANGO_SECRET_KEY=django-insecure-ключ
+3. Запуск проекта
+bash
+Копировать
+Редактировать
+docker-compose up --build -d
+4. Настройка внутри контейнера
+bash
+Копировать
+Редактировать
+docker-compose exec backend python manage.py makemigrations
+docker-compose exec backend python manage.py migrate
+docker-compose exec backend python manage.py collectstatic --noinput
