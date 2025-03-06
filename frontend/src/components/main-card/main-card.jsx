@@ -8,8 +8,7 @@ import styles from "./main-card.module.css";
 import { loadStripe } from "@stripe/stripe-js";
 import { addToCart } from "../../utils/api";
 
-const stripePromise = loadStripe("pk_test_51QxY3xA9bDJlznD3w2ePZuHjl57WtjnQ9OfPHEXuJ2Ebc9UecUG5Jb74pDFBC311tdwxx0R3w2DMCuMrDztIF8oA00Hg7jy4mM");
-
+const stripePromise = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
 const handleBuy = async (id) => {
   try {
     const response = await fetch(`/api/items/${id}/buy/`, { cache: "no-store" });  // Отключаем кеширование

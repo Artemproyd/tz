@@ -125,5 +125,5 @@ REST_FRAMEWORK = {
 }
 
 SITE_URL = os.getenv("SITE_URL", "http://localhost:9000")
-STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "sk_test_51QychpLtvL6tEL8FaOscIN7hI3tfg2ky6vvUIhLSnGCAZSmjvyClEjtbNbNNImOtxDX8ixhwjGA42V8mRIv2PBEo00tg3mbefb")  # Замени на свой ключ
-STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY", "pk_test_51QychpLtvL6tEL8FbDzGA2cjiyOzwUCnDvh7B8BC6QrsaAoUlyJL9eB4iYvmLACP2S6km5rFLd7pRagOczc2AmXN009andLMXZ")
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY")

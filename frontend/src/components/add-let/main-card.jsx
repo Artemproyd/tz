@@ -12,16 +12,10 @@ import { Input } from "../ui/input/input";
 
 import styles from "./add-card-page.module.css";
 
-const CurrencyOptions = [
-  { label: "Рубли (RUB)", value: "rub" },
-  { label: "Доллары (USD)", value: "usd" },
-];
-
 export const AddItemPage = ({ extraClass = "" }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [currency, setCurrency] = useState("rub"); // 🛠 Добавляем состояние для валюты
   const [errorName, setErrorName] = useState("");
   const [errorDescription, setErrorDescription] = useState("");
   const [errorPrice, setErrorPrice] = useState("");
@@ -59,7 +53,7 @@ export const AddItemPage = ({ extraClass = "" }) => {
     if (!isValid) return;
 
     // Создание товара
-    createItem({ name, description, price: Number(price), currency })
+    createItem({ name, description, price: Number(price) })
       .then((res) => {
         if (res) {
           history.push(`/items/${res.id}`); // Перенаправляем на страницу товара
@@ -103,13 +97,6 @@ export const AddItemPage = ({ extraClass = "" }) => {
           onChange={(e) => setPrice(e.target.value)}
           error={errorPrice}
         />
-        <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
-          {CurrencyOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
         <ButtonForm
           extraClass={styles.submit_btn}
           text="Сохранить"

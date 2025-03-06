@@ -229,7 +229,7 @@ def stripe_webhook(request):
         if order_id:
             try:
                 order = Order.objects.get(id=order_id)
-                order.orders_items.all().delete()  # Удаляем все товары
+                order.orders_items.all().delete()
             except Order.DoesNotExist:
                 return JsonResponse({"error": "Order not found"}, status=404)
 
